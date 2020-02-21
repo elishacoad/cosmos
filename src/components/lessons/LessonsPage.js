@@ -4,16 +4,12 @@ import Typography from '@material-ui/core/Typography';
 import { Progress } from 'react-sweet-progress';
 import "react-sweet-progress/lib/style.css";
 import Chip from '@material-ui/core/Chip';
-import ReactTooltip from 'react-tooltip';
 import React, { Component } from 'react';
 import LessonList from './LessonList';
 import { Container } from '@material-ui/core';
 import { API, Auth } from 'aws-amplify';
 
 const sum = (arr) => arr.reduce((a, b) => a + b, 0);
-
-const INCOMPLETE_PERCENT_TOOLTIP = 'Complete all the lessons in the Datathon to win a dope T-Shirt!';
-const COMPLETE_PERCENT_TOOLTIP = "<span>You've completed all the lessons!🎉<hr/>Head up to a volunteer and ask for your prize! (Spoiler: It's a T-Shirt)</span>";
 
 const pctComplete = (lessons) =>
     (sum(lessons.map((l) => sum(l.challenges.map((c) => c.points)))) /
@@ -88,19 +84,16 @@ export default class extends Component {
 
     renderLessons = (lessons, percent) => {
         const percentLabel = isNaN(percent) ? '...' : percent;
-        const percentCompleteTooltip = (percentLabel === 100) ? COMPLETE_PERCENT_TOOLTIP : INCOMPLETE_PERCENT_TOOLTIP;
         return (
             <div>
                 <Container>
                     <Typography align='center'>
                         {`${this.state.name} (${this.state.email})`}
                     </Typography>
-                    <ReactTooltip effect='solid' type='dark' html/>
                     <Chip 
                         size="large" color="secondary" 
                         label={`Learner Track: ${percentLabel}% complete`} 
                         style={{float: 'right'}}
-                        data-tip={percentCompleteTooltip}
                     />
                     <Grid style={{ paddingBottom: 24 }} item>
                         {/* <LinearProgress
